@@ -1,10 +1,10 @@
 kaboom({
     global: true,
     fullscreen: true,
-    scale: 1,
+    scale: 2,
     debug: true,
-    clearColor: [0,0,0,1],
-})
+    clearColor: [0, 0, 0, 1],
+  })
 
 loadRoot('https://i.imgur.com/')
 loadSprite('coin', 'wbKxhcd.png')
@@ -27,9 +27,32 @@ loadSprite('blue-evil-shroom', 'SvV4ueD.png')
 loadSprite('blue-surprise', 'RMqCc1G.png')
 
 
-screen("game", () => {
+scene("game", () => {
     layers(['bg', 'obj', 'ui'], 'obj')
+
+    const gameBoard = [
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '                                                          ',
+        '==============================   ==========   =====   ====',
+    ]
+    
+    const levelConfig = {
+        width: 20,
+        height: 20,
+        '=': [sprite('block'), solid()],
+
+    }
+
+    const gameLevel = addLevel(gameBoard, levelConfig)
 
 })
 
-StaticRange("game")
+start("game")
