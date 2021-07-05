@@ -80,9 +80,37 @@ scene("game", () => {
 
     const gameLevel = addLevel(gameBoard, levelConfig)
 
+    const scoreLabel = add([text('score'), pos(30, 6), layer('ui'), { value: 'score', }])
+
+    add([text('level' + 'test' , pos(4,6))])
+
     const player = add([
         sprite('mario'), solid(), pos(30, 0), body(), origin('bot')
     ])
+
+    const MoveSpeed = 120
+    const JumpForce = 360
+    let isJumping = true
+
+    keyDown('left', () => {
+        player.move(-MoveSpeed, 0)
+    })
+    keyDown('right', () => {
+        player.move(MoveSpeed, 0)
+    })
+
+    player.action(() => {
+        if(player.grounded()) {
+          isJumping = false
+        }
+    })
+
+    keyPress('space', () => {
+        if (player.grounded()) {
+          isJumping = true
+          player.jump(JumpForce)
+        }
+    })
 
 })
 
