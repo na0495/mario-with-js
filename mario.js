@@ -6,7 +6,6 @@ kaboom({
     clearColor: [0,0,0,1],
 })
 
-
 loadRoot('https://i.imgur.com/')
 loadSprite('coin', 'wbKxhcd.png')
 loadSprite('evil-shroom', 'KPO3fR9.png')
