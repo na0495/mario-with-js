@@ -37,11 +37,11 @@ const enemySpeed = -20
 let isJumping = true
 let CurrentJumpForce = JumpForce
 
-scene("game", ({ score }) => {
+scene("game", ({ level, score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
 
     const gameBoard = [
-        // [
+          [
             '                                               ',
             '                                               ',
             '                                               ',
@@ -52,19 +52,19 @@ scene("game", ({ score }) => {
             '                            -+                 ',
             '                    ^   ^   ()                 ',
             '==============================   ==============',
-        //   ],
-        //   [
-        //     '£                                       £',
-        //     '£                                       £',
-        //     '£                                       £',
-        //     '£                                       £',
-        //     '£                                       £',
-        //     '£        @@@@@@              x x        £',
-        //     '£                          x x x        £',
-        //     '£                        x x x x  x   -+£',
-        //     '£               z   z  x x x x x  x   ()£',
-        //     '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-        //   ]
+          ],
+          [
+            '£                                       £',
+            '£                                       £',
+            '£                                       £',
+            '£                                       £',
+            '£                                       £',
+            '£        @@@@@@              x x        £',
+            '£                          x x x        £',
+            '£                        x x x x  x   -+£',
+            '£               z   z  x x x x x  x   ()£',
+            '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
+          ]
         ]
     const levelConfig = {
         width: 20,
@@ -78,7 +78,7 @@ scene("game", ({ score }) => {
         ')': [sprite('pipeBottomRight'), solid(), scale(0.5)],
         '-': [sprite('pipeTopLeft'), solid(), scale(0.5), 'pipe'],
         '+': [sprite('pipeTopRight'), solid(), scale(0.5), 'pipe'],
-        '^': [sprite('evilShroom'), solid(), 'dangerous'],
+        '^': [sprite('evilShroom'), solid(), 'danger'],
         '#': [sprite('mushroom'), solid(), 'mushroom', body()],
         '!': [sprite('blueBlock'), solid(), scale(0.5)],
         '£': [sprite('blueBrick'), solid(), scale(0.5)],
@@ -88,7 +88,7 @@ scene("game", ({ score }) => {
 
     }
 
-    const gameLevel = addLevel(gameBoard, levelConfig)
+    const gameLevel = addLevel(gameBoard[level], levelConfig)
     
     const scoreLabel = add([text(score), pos(30, 6), layer('ui'), { value: 'score', }])
 
@@ -125,7 +125,7 @@ scene("game", ({ score }) => {
     }
 
     const player = add([
-        sprite('mario'), solid(), pos(30, 0), body(), origin('bot'), big()
+        sprite('mario'), solid(), pos(30, 0), body(), big(), origin('bot')
     ])
 
     action('mushroom', (m) => {
@@ -152,7 +152,7 @@ scene("game", ({ score }) => {
 
     player.collides('mushroom', (m) =>  {
         destroy(m)
-        player.biggify(6)
+        player.biggify(5)
     })
 
     player.collides('coin', (c) => {
@@ -172,9 +172,18 @@ scene("game", ({ score }) => {
 
     player.action(() => {
         camPos(player.pos)
-        if (player.pos >= fallDeath) {
-            globalThis('lose', {score :scoreLabel.value})
+        if (player.pos.y >= fallDeath) {
+            go('lose', {score :scoreLabel.value})
         }
+    })
+
+    player.collides('pipe',() => {
+        keyPress('down', () => {
+            go('game', {
+                level: (level + 1) % gameBoard.length,
+                score: scoreLabel.value
+            })
+        })
     })
 
     
