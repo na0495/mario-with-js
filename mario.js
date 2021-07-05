@@ -6,6 +6,8 @@ kaboom({
     clearColor: [0, 0, 0, 1],
   })
 
+// Image Frame 
+
 loadRoot('https://i.imgur.com/')
 loadSprite('coin', 'wbKxhcd.png')
 loadSprite('evilShroom', 'KPO3fR9.png')
@@ -19,7 +21,6 @@ loadSprite('pipeTopLeft', 'ReTPiWY.png')
 loadSprite('pipeTopRight', 'hj2GK4n.png')
 loadSprite('pipeBottomLeft', 'c1cYSbt.png')
 loadSprite('pipeBottomRight', 'nqQ79eI.png')
-
 loadSprite('blueBlock', 'fVscIbn.png')
 loadSprite('blueBrick', '3e5YRQd.png')
 loadSprite('blueSteel', 'gqVoI2b.png')
@@ -27,7 +28,7 @@ loadSprite('blueEvilShroom', 'SvV4ueD.png')
 loadSprite('blueSurprise', 'RMqCc1G.png')
 
 
-//game setting 
+// game rules setting 
 
 const MoveSpeed = 120
 const JumpForce = 360
@@ -41,18 +42,33 @@ scene("game", ({ level, score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
 
     const gameBoard = [
+          //Level 1
           [
-            '                                               ',
-            '                                               ',
-            '                                               ',
-            '                                               ',
-            '                                               ',
-            '     %   =*=%=                                 ',
-            '                                               ',
-            '                            -+                 ',
-            '                    ^   ^   ()                 ',
-            '==============================   ==============',
+            '                                                                            ',
+            '                                                                            ',
+            '                                                                            ',
+            '                                                                            ',
+            '                                                                            ',
+            '     %   =*=%=                                                              ',
+            '                                                  ^ x                       ',
+            '                                              ======x  x                  -+',
+            '                    ^   ^         x   ===           x  x  x          ^    ()',
+            '============================   ====    =====================================',
           ],
+          //Level 2
+          [ '                                                                   ',
+            '                              %                                    ',
+            '                     =                                             ',
+            '                     =    =====                                    ',
+            '                     =        =       =%=       =%                 ',
+            '                     =        =                                    ',                 
+            '                     =====    =                                    ',
+            '                                                                   ',
+            '      %                       =      ====================        -+',
+            '                    ^   =======                                  ()',
+            '======================                                        =====',
+          ],
+          //Level 3
           [
             '£                                       £',
             '£                                       £',
@@ -99,6 +115,7 @@ scene("game", ({ level, score }) => {
         let isBig = false
         return {
             update() {
+                CurrentJumpForce = BigJumpForce
                 if (isBig) {
                     timer -=dt()
                     if (timer <= 0) {
@@ -116,7 +133,6 @@ scene("game", ({ level, score }) => {
                 isBig = false
             },
             biggify(time) {
-                CurrentJumpForce = BigJumpForce
                 this.scale = vec2(2)
                 timer = time
                 isBig = false
@@ -152,7 +168,7 @@ scene("game", ({ level, score }) => {
 
     player.collides('mushroom', (m) =>  {
         destroy(m)
-        player.biggify(5)
+        player.biggify(2)
     })
 
     player.collides('coin', (c) => {
@@ -186,8 +202,6 @@ scene("game", ({ level, score }) => {
         })
     })
 
-    
-
     //? Moving setting
 
     keyDown('left', () => {
@@ -202,7 +216,6 @@ scene("game", ({ level, score }) => {
           isJumping = false
         }
     })
-
     keyPress('space', () => {
         if (player.grounded()) {
           isJumping = true
@@ -214,6 +227,6 @@ scene("game", ({ level, score }) => {
 
 scene('lose', ({ score }) => {
     add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
-  })
+})
 
-  start("game", { level: 0, score: 0})
+start("game", { level: 0, score: 0})
