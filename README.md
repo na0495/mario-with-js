@@ -11,4 +11,4 @@ https://mariowithjs.netlify.app/
 
 # bugs :
 
-The game is not complted yetn there is many bugs, and the code was heavily inspired by a youtube video
+The game is not complted yet, there is many bugs, and the code was heavily inspired by a youtube video
