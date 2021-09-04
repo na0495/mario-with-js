@@ -265,11 +265,11 @@ kaboom({
 
   })
   
-  scene('lose', ({ score, lose }) => {
-    add([text(lose, 30), origin('center'), pos(width()/2, height()/ 2)])
-    // keyPress('r', () => {
-    //     window.location.reload();
-    // })
+  scene('lose', ({ score }) => {
+    add([text(score, 30), origin('center'), pos(width()/2, height()/ 2)])
+    keyPress('r', () => {
+        window.location.reload();
+    })
   })
 
   scene('win', ({ score }) => {
