@@ -3,7 +3,7 @@
 kaboom({
     global: true,
     fullscreen: true,
-    scale: 2,
+    scale: 1.5,
     debug: true,
     clearColor: [0, 0, 0, 1],
   })
@@ -126,7 +126,7 @@ kaboom({
       pos(30, 6),
       layer('ui'),
       {
-        value: score,
+        value: score
       }
     ])
   
@@ -259,13 +259,19 @@ kaboom({
         player.jump(CURRENT_JUMP_FORCE)
       }
     })
+    keyPress('r', () => {
+      window.location.reload();
+    })
 
-    
   })
   
-  scene('lose', ({ score }) => {
-    add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
+  scene('lose', ({ score, lose }) => {
+    add([text(lose, 30), origin('center'), pos(width()/2, height()/ 2)])
+    // keyPress('r', () => {
+    //     window.location.reload();
+    // })
   })
+
   scene('win', ({ score }) => {
     add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
   })
