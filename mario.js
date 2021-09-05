@@ -218,12 +218,12 @@ kaboom({
     })
 
 
-    player.action(() => {
-      camPos(player.pos)
-      if (player.pos.y >= FALL_DEATH) {
-        go('win', { score: scoreLabel.value})
-      }
-    })
+    // player.action(() => {
+    //   camPos(player.pos)
+    //   if (player.pos.y >= FALL_DEATH) {
+    //     go('win', { score: scoreLabel.value})
+    //   }
+    // })
     
   
     player.collides('pipe', () => {
@@ -259,21 +259,33 @@ kaboom({
         player.jump(CURRENT_JUMP_FORCE)
       }
     })
+
     keyPress('r', () => {
       window.location.reload();
     })
 
-  })
-  
-  scene('lose', ({ score }) => {
-    add([text(score, 30), origin('center'), pos(width()/2, height()/ 2)])
-    keyPress('r', () => {
-        window.location.reload();
+    keyPress("p", () => {
+      go("gameover", score);
     })
+
   })
+
+  scene('lose', ({ score }) => {
+    add([text("Game Over \n\n\n" + score + "\n\n\n press R or click on \n\n the Screen to replay!", 30), origin('center'), pos(width()/2, height()/ 2)])
+    keyPress("r", () => {
+      window.location.reload();
+    });
+    mouseClick(() => window.location.reload());
+  })
+
+  scene("gameover", (score) => {
+    add([text("Your current score is :  " + score, 30), origin('center'), pos(width()/2, height()/ 2)])
+    // mouseClick(() => go("game"));
+  });
 
   scene('win', ({ score }) => {
     add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
   })
   
   start("game", { level: 0, score: 0})
+
