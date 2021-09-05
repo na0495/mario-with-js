@@ -63,12 +63,12 @@ kaboom({
         '                                                                                                                            =',
         '                                                                                                                            =',
         '                          ====                                                              ^              ^                =',
-        '                               ==   =                                         ==============================                =',
-        '               %                     ==           =*=%========%%===                                                         =',
-        '                                         ===                                                                              -+=',
+        '                               ==   ==                                        =======  =====================                =',
+        '               %                      =           =*=%========%%===                                                         =',
+        '                                         ===                           ==                                                 -+=',
         '                                                                              =                                          =()=',
         '                    ^   ^                                                   ^ =                                         ==()=',
-        '=====  ==  =================   ====   =========================================                                   ===========',
+        '=====  ==  =================   ====   =========================================                                ==============',
       ],
       [
         '                                                                                                                      ',
@@ -84,16 +84,17 @@ kaboom({
       ],
       [
         '£                                                                                                            £',
+        '£                                                                                                xxxxxx      £',
+        '£                                                                                                          x £',
         '£                                                                                                            £',
-        '£                                                                                                            £',
-        '£                                                                                                            £',
-        '£                                                       xxx                                 z                £',
+        '£  X                                                    xxx                                 z               x£',
         '£        @@@@@@              x x                   xxx                           @@@%@@@%%%%%@@              £',
-        '£                          x x x   xx   xxxxxxxx                   xxx                                       £',
-        '£                        x x x x           xx                 xxx                                         x-+£',
+        '£X                         x x x   xx   xxxxxxxx                   xxx                                       £',
+        '£                        x x x x           xx                 xxx                                         x~/£',
         '£               z   z  x x x x x           xx                             xx                  z           x()£',
         '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!         !!!!                             xxx!!!!!!!!!!!!!!!!!!!!   !!!!!!!!!',
-      ]
+      ],
+      
     ]
   
     const levelCfg = {
@@ -115,6 +116,8 @@ kaboom({
       'z': [sprite('blue-evil-shroom'), solid(), scale(0.5), 'dangerous'],
       '@': [sprite('blue-surprise'), solid(), scale(0.5), 'coin-surprise'],
       'x': [sprite('blue-steel'), solid(), scale(0.5)],
+      '~': [sprite('pipe-top-left'), solid(), scale(0.5), 'win-pipe'],
+      '/': [sprite('pipe-top-right'), solid(), scale(0.5), 'win-pipe'],
 
   
     }
@@ -122,15 +125,24 @@ kaboom({
     const gameLevel = addLevel(maps[level], levelCfg)
   
     const scoreLabel = add([
-      text(score),
+      text(`Score ${score}`),,
       pos(30, 6),
       layer('ui'),
       {
         value: score
       }
     ])
+
+    // const levelLabel = add([
+    //   text(`Level ${level}`),
+    //   pos(30, 6),
+    //   layer('ui'),
+    //   {
+    //     value: level
+    //   }
+    // ])
   
-    add([text('level ' + parseInt(level + 1) ), pos(40, 6)])
+    add([text('level ' + parseInt(level + 1) ), pos(-40, 6)])
     
     function big() {
       let timer = 0
@@ -189,6 +201,7 @@ kaboom({
   
     player.collides('mushroom', (m) => {
       destroy(m)
+      scoreLabel.value = scoreLabel.value + 2
       player.biggify(6)
     })
   
@@ -205,6 +218,8 @@ kaboom({
     player.collides('dangerous', (d) => {
       if (isJumping) {
         destroy(d)
+        scoreLabel.value = scoreLabel.value + 5
+        scoreLabel.text = scoreLabel.value
       } else {
         go('lose', { score: scoreLabel.value})
       }
@@ -228,14 +243,16 @@ kaboom({
   
     player.collides('pipe', () => {
       keyPress('down', () => {
-        // if (level == 4) {
-        //   go('win', { score: scoreLabel.value})
-        // } else {
           go('game', {
           level: (level + 1) % maps.length,
           score: scoreLabel.value
           })
         // }
+      })
+    })
+    player.collides('win-pipe', () => {
+      keyPress('down', () => {
+        go('win', { score: scoreLabel.value})
       })
     })
   
@@ -264,9 +281,9 @@ kaboom({
       window.location.reload();
     })
 
-    keyPress("p", () => {
-      go("gameover", score);
-    })
+    // keyPress("p", () => {
+    //   go("gameover",{ score: scoreLabel.value, level: levelLabel.value} );
+    // })
 
   })
 
@@ -278,13 +295,13 @@ kaboom({
     mouseClick(() => window.location.reload());
   })
 
-  scene("gameover", (score) => {
-    add([text("Your current score is :  " + score, 30), origin('center'), pos(width()/2, height()/ 2)])
-    // mouseClick(() => go("game"));
-  });
+  // scene("gameover", (score, level) => {
+  //   add([text("Your current score is :  " + score, 30), origin('center'), pos(width()/2, height()/ 2)])
+  //   mouseClick(() => go("game", { level , score }))
+  // });
 
   scene('win', ({ score }) => {
-    add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
+    add([text("That wasn't hard GG\n\n this was the last level \n\n your Score is \n\n" + score, 32), origin('center'), pos(width()/2, height()/ 2)])
   })
   
   start("game", { level: 0, score: 0})
