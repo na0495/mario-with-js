@@ -14,9 +14,9 @@ https://mariowithjs.netlify.app/
 The game is not complted yet, there is many bugs, and the code was heavily inspired by a youtube video
 
 # Contribution 
-
+This is the list of all the contributer of the web game :
 <a href = "https://github.com/Tanu-N-Prabhu/Python/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo = na0495/mario-with-js"/>
+  <img src = "https://contrib.rocks/image?repo=na0495/mario-with-js"/>
 </a>
 
 Made with [contributors-img](https://contrib.rocks).
