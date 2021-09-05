@@ -19,7 +19,9 @@ kaboom({
   // Game logic
   
   let isJumping = true
+
   
+  loadSound('jump', 'https://mariowithjs.netlify.app/assets/sound/big_jump.ogg')
   loadRoot('https://i.imgur.com/')
   loadSprite('bg', 'jPJzaRT.png');
   loadSprite('coin', 'wbKxhcd.png')
@@ -34,12 +36,12 @@ kaboom({
   loadSprite('pipe-top-right', 'hj2GK4n.png')
   loadSprite('pipe-bottom-left', 'c1cYSbt.png')
   loadSprite('pipe-bottom-right', 'nqQ79eI.png')
-  
   loadSprite('blue-block', 'fVscIbn.png')
   loadSprite('blue-brick', '3e5YRQd.png')
   loadSprite('blue-steel', 'gqVoI2b.png')
   loadSprite('blue-evil-shroom', 'SvV4ueD.png')
   loadSprite('blue-surprise', 'RMqCc1G.png')
+
   
   
   
@@ -282,6 +284,7 @@ kaboom({
       if (player.grounded()) {
         isJumping = true
         player.jump(CURRENT_JUMP_FORCE)
+        play('jump')
       }
     })
 
