@@ -26,17 +26,24 @@ kaboom({
   // insated of loadRoot('https://mariowithjs.netlify.app/assets/sound/')
 
 
-  loadRoot('https://mariowithjs.netlify.app/assets/sound/')
-  // loadRoot('http://localhost:8000/assets/sound/')
+  //loadRoot('https://mariowithjs.netlify.app/assets/sound/')
+  loadRoot('http://localhost:8000/assets/sound/')
   loadSound('big_jump', 'big_jump.ogg')
   loadSound('small_jump', 'small_jump.ogg')
   loadSound('bump', 'bump.ogg')
   loadSound('coin', 'coin.ogg')
-  loadSound('main_theme', 'main_theme_sped_up.ogg')
   loadSound('stomp', 'stomp.ogg')
   loadSound('powerup', 'powerup.ogg')
   loadSound('powerup_appears', 'powerup_appears.ogg')
   loadSound('pipe', 'pipe.ogg')
+
+  //loadRoot('https://mariowithjs.netlify.app/assets/music/')
+  loadRoot('http://localhost:8000/assets/music/')
+  loadSound('death', 'death.wav')
+  loadSound('gameover', 'game_over.ogg')
+  loadSound('win', 'world_clear.wav')
+  loadSound('main_theme', 'main_theme.ogg')
+  loadSound('stage_clear', 'stage_clear.wav')
   
   loadRoot('https://i.imgur.com/')
   loadSprite('bg', 'jPJzaRT.png');
@@ -159,15 +166,6 @@ kaboom({
         value: score
       }
     ])
-
-    // const levelLabel = add([
-    //   text(`Level ${level}`),
-    //   pos(30, 6),
-    //   layer('ui'),
-    //   {
-    //     value: level
-    //   }
-    // ])
   
     add([text('level ' + parseInt(level + 1) ), pos(-40, 6)])
     
@@ -210,17 +208,21 @@ kaboom({
     ])
 
     // the music might not autoplay cuz some browser won't allow audio start before any user interaction
-    // const music = play("main_theme", { loop: true, });
+    const music = play("main_theme", { loop: true, });
 
-    // // adjust global volume
-    // volume(0.5);
+    // adjust global volume
+    volume(0.5);
+
+    // if (music.paused()) {
+    //   music.play();
+    // } else {
+    //   music.pause();
+    // }
   
     action('mushroom', (m) => {
       m.move(20, 0)
     })
 
-
-  
     player.on("headbump", (obj) => {
       if (obj.is('coin-surprise')) {
         play('stomp')
@@ -261,6 +263,9 @@ kaboom({
         scoreLabel.value = scoreLabel.value + 5
         scoreLabel.text = scoreLabel.value
       } else {
+        music.stop()
+        play('death')
+        play('gameover')
         go('lose', { score: scoreLabel.value})
       }
     })
@@ -268,22 +273,17 @@ kaboom({
     player.action(() => {
       camPos(player.pos)
       if (player.pos.y >= FALL_DEATH) {
+        music.stop()
+        play('death')
+        play('gameover')
         go('lose', { score: scoreLabel.value})
       }
     })
-
-
-    // player.action(() => {
-    //   camPos(player.pos)
-    //   if (player.pos.y >= FALL_DEATH) {
-    //     go('win', { score: scoreLabel.value})
-    //   }
-    // })
     
-  
     player.collides('pipe', () => {
       keyPress('down', () => {
           play('pipe')
+          music.stop()
           go('game', {
           level: (level + 1) % maps.length,
           score: scoreLabel.value
@@ -293,6 +293,8 @@ kaboom({
     })
     player.collides('win-pipe', () => {
       keyPress('down', () => {
+        music.stop()
+        play('win')
         go('win', { score: scoreLabel.value})
       })
     })
@@ -334,7 +336,6 @@ kaboom({
   })
 
   scene('lose', ({ score }) => {
-    music.pause();
     add([text("Game Over \n\n\n" + score + "\n\n\n press R or click on \n\n the Screen to replay!", 30), origin('center'), pos(width()/2, height()/ 2)])
     keyPress("r", () => {
       window.location.reload();
