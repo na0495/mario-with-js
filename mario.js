@@ -20,6 +20,7 @@ kaboom({
   
   let isJumping = true
 
+
   // make sure to use your local server address
   // You can use python -m http.server $PORT or python3 -m http.server $PORT
   // To run your server and then use loadRoot('http://localhost:8000/assets/sound/')
@@ -65,9 +66,64 @@ kaboom({
   loadSprite('blue-evil-shroom', 'SvV4ueD.png')
   loadSprite('blue-surprise', 'RMqCc1G.png')
 
+
+  loadSprite("border", "/border.png");
   
+  scene("menu", () => {
+
+    add([
+      text("Mario Bros with Js"),
+      pos(240, 80),
+      scale(3),
+    ]);
   
+    add([
+      rect(160, 20),
+      pos(240, 180),
+      "button",
+      {
+        clickAction: () => go("game", { level: 0, score: 0}),
+      },
+    ]);
   
+    add([
+      text("Play game"),
+      pos(285, 187),
+      color(0, 0, 0)
+    ]);
+  
+    add([
+      rect(160, 20),
+      pos(240, 210),
+      "button",
+      {
+        clickAction: () => window.open('https://github.com/na0495/mario-with-js', '_blank'),
+      },
+    ]);
+  
+    add([
+      text("Check github"),
+      pos(275, 217),
+      color(0, 0, 0)
+    ]);
+  
+    action("button", b => {
+  
+      if (b.isHovered()) {
+        b.use(color(0.7, 0.7, 0.7));
+      } else {
+        b.use(color(1, 1, 1));
+      }
+  
+      if (b.isClicked()) {
+        b.clickAction();
+      }
+  
+    });
+  
+  });
+  start("menu")
+
   scene("game", ({ level, score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
     
@@ -352,5 +408,5 @@ kaboom({
     add([text("That wasn't hard GG\n\n this was the last level \n\n your Score is \n\n" + score, 32), origin('center'), pos(width()/2, height()/ 2)])
   })
   
-  start("game", { level: 0, score: 0})
+  // start("game", { level: 0, score: 0})
 
