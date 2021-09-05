@@ -15,6 +15,12 @@ The game is not complted yet, there is many bugs, and the code was heavily inspi
 
 # Contribution 
 
+<a href = "https://github.com/Tanu-N-Prabhu/Python/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo = na0495/mario-with-js"/>
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
+
 > **Note:**
 > - While the project is in development, there may be some bugs & incomplite functionality.
 > - This poroject in maintaned by the [https://github.com/](na0495) team.
