@@ -20,8 +20,24 @@ kaboom({
   
   let isJumping = true
 
+  // make sure to use your local server address
+  // You can use python -m http.server $PORT or python3 -m http.server $PORT
+  // To run your server and then use loadRoot('http://localhost:8000/assets/sound/')
+  // insated of loadRoot('https://mariowithjs.netlify.app/assets/sound/')
+
+
+  loadRoot('https://mariowithjs.netlify.app/assets/sound/')
+  // loadRoot('http://localhost:8000/assets/sound/')
+  loadSound('big_jump', 'big_jump.ogg')
+  loadSound('small_jump', 'small_jump.ogg')
+  loadSound('bump', 'bump.ogg')
+  loadSound('coin', 'coin.ogg')
+  loadSound('main_theme', 'main_theme_sped_up.ogg')
+  loadSound('stomp', 'stomp.ogg')
+  loadSound('powerup', 'powerup.ogg')
+  loadSound('powerup_appears', 'powerup_appears.ogg')
+  loadSound('pipe', 'pipe.ogg')
   
-  loadSound('jump', 'https://mariowithjs.netlify.app/assets/sound/big_jump.ogg')
   loadRoot('https://i.imgur.com/')
   loadSprite('bg', 'jPJzaRT.png');
   loadSprite('coin', 'wbKxhcd.png')
@@ -47,6 +63,7 @@ kaboom({
   
   scene("game", ({ level, score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
+    
 
     // background image
     // add([
@@ -191,18 +208,28 @@ kaboom({
       big(),
       origin('bot')
     ])
+
+    // the music might not autoplay cuz some browser won't allow audio start before any user interaction
+    // const music = play("main_theme", { loop: true, });
+
+    // // adjust global volume
+    // volume(0.5);
   
     action('mushroom', (m) => {
       m.move(20, 0)
     })
+
+
   
     player.on("headbump", (obj) => {
       if (obj.is('coin-surprise')) {
+        play('stomp')
         gameLevel.spawn('$', obj.gridPos.sub(0, 1))
         destroy(obj)
         gameLevel.spawn('}', obj.gridPos.sub(0,0))
       }
       if (obj.is('mushroom-surprise')) {
+        play('powerup_appears')
         gameLevel.spawn('#', obj.gridPos.sub(0, 1))
         destroy(obj)
         gameLevel.spawn('}', obj.gridPos.sub(0,0))
@@ -211,12 +238,14 @@ kaboom({
   
     player.collides('mushroom', (m) => {
       destroy(m)
+      play('powerup')
       scoreLabel.value = scoreLabel.value + 2
       player.biggify(6)
     })
   
     player.collides('coin', (c) => {
       destroy(c)
+      play('coin')
       scoreLabel.value++
       scoreLabel.text = scoreLabel.value
     })
@@ -228,6 +257,7 @@ kaboom({
     player.collides('dangerous', (d) => {
       if (isJumping) {
         destroy(d)
+        play('bump')
         scoreLabel.value = scoreLabel.value + 5
         scoreLabel.text = scoreLabel.value
       } else {
@@ -253,6 +283,7 @@ kaboom({
   
     player.collides('pipe', () => {
       keyPress('down', () => {
+          play('pipe')
           go('game', {
           level: (level + 1) % maps.length,
           score: scoreLabel.value
@@ -284,7 +315,11 @@ kaboom({
       if (player.grounded()) {
         isJumping = true
         player.jump(CURRENT_JUMP_FORCE)
-        play('jump')
+        if (player.is('big')) {
+          play('big_jump')
+        } else {
+          play('small_jump')
+        }
       }
     })
 
@@ -299,6 +334,7 @@ kaboom({
   })
 
   scene('lose', ({ score }) => {
+    music.pause();
     add([text("Game Over \n\n\n" + score + "\n\n\n press R or click on \n\n the Screen to replay!", 30), origin('center'), pos(width()/2, height()/ 2)])
     keyPress("r", () => {
       window.location.reload();
