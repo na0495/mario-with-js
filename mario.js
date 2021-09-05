@@ -49,11 +49,11 @@ kaboom({
     layers(['bg', 'obj', 'ui'], 'obj')
 
     // background image
-    add([
-      sprite("bg"),
-      scale(width(), height()/440),
-      layer("bg"),
-    ]);
+    // add([
+    //   sprite("bg"),
+    //   scale(width(), height()/440),
+    //   layer("bg"),
+    // ]);
   
     const maps = [
       [
