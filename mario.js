@@ -3,7 +3,7 @@
 kaboom({
     global: true,
     fullscreen: true,
-    scale: 1.5,
+    scale: 2,
     debug: true,
     clearColor: [0, 0, 0, 1],
   })
@@ -21,6 +21,7 @@ kaboom({
   let isJumping = true
   
   loadRoot('https://i.imgur.com/')
+  loadSprite('bg', 'jPJzaRT.png');
   loadSprite('coin', 'wbKxhcd.png')
   loadSprite('evil-shroom', 'KPO3fR9.png')
   loadSprite('brick', 'pogC9x5.png')
@@ -44,6 +45,13 @@ kaboom({
   
   scene("game", ({ level, score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
+
+    // background image
+    add([
+      sprite("bg"),
+      scale(width(), height()/440),
+      layer("bg"),
+    ]);
   
     const maps = [
       [
