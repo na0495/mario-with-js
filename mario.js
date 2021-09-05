@@ -26,8 +26,8 @@ kaboom({
   // insated of loadRoot('https://mariowithjs.netlify.app/assets/sound/')
 
 
-  //loadRoot('https://mariowithjs.netlify.app/assets/sound/')
-  loadRoot('http://localhost:8000/assets/sound/')
+  loadRoot('https://mariowithjs.netlify.app/assets/sound/')
+  // loadRoot('http://localhost:8000/assets/sound/')
   loadSound('big_jump', 'big_jump.ogg')
   loadSound('small_jump', 'small_jump.ogg')
   loadSound('bump', 'bump.ogg')
@@ -37,8 +37,8 @@ kaboom({
   loadSound('powerup_appears', 'powerup_appears.ogg')
   loadSound('pipe', 'pipe.ogg')
 
-  //loadRoot('https://mariowithjs.netlify.app/assets/music/')
-  loadRoot('http://localhost:8000/assets/music/')
+  loadRoot('https://mariowithjs.netlify.app/assets/music/')
+  // loadRoot('http://localhost:8000/assets/music/')
   loadSound('death', 'death.wav')
   loadSound('gameover', 'game_over.ogg')
   loadSound('win', 'world_clear.wav')
